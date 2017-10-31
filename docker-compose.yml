@@ -3,11 +3,17 @@ version: '3'
 services:
   identityserver:
     image: bmantay/identityserver
+    build:
+      context: ./identityserver
+      dockerfile: Dockerfile
     ports:
       - "5000:80"
 
   webapi:
     image: bmantay/webapi
+    build:
+      context: ./webapi
+      dockerfile: Dockerfile
     ports:
       - "5001:80"
     links:
@@ -15,6 +21,9 @@ services:
 
   angular-spa:
     image: bmantay/angular-spa
+    build:
+      context: ./angular-spa
+      dockerfile: Dockerfile
     ports:
       - "4200:80"
     links:
