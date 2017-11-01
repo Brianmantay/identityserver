@@ -4,20 +4,12 @@ services:
   identityserver:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    build:
-      context: ./identityserver
-      dockerfile: Dockerfile
 
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    build:
-      context: ./webapi
-      dockerfile: Dockerfile
-
+    
   angular-spa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    build:
-      context: ./angular-spa
-      dockerfile: Dockerfile
+    
