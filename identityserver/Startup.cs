@@ -35,10 +35,9 @@ namespace identityserver
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddTestUsers(TestUsers.Users)
                 .AddCorsPolicyService<InMemoryCorsPolicyService>();
-           
-            services.AddMvc();
 
-            
+            services.AddCors();
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
