@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace identityserver
 {
@@ -25,23 +26,24 @@ namespace identityserver
             };
         }
 
-        public static IEnumerable<Client> GetClients()
+        public static IEnumerable<Client> GetClients(IConfigurationRoot configuration)
         {
-            return new List<Client>
+            var clients =  new List<Client>
             {
                 new Client
                 {
                     ClientId = "angular_spa",
                     ClientName = "Angular 4 Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
-                    RedirectUris = new List<string> { "http://localhost:4200/auth-callback" },
-                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200/" },
-                    AllowedCorsOrigins = new List<string> { "http://localhost:4200", "http://localhost:5001" },
+                    RedirectUris = new List<string> { $"{configuration["ANGULAR_SPA"]}/auth-callback" },
+                    PostLogoutRedirectUris = new List<string> { $"{configuration["ANGULAR_SPA"]}/" },
+                    AllowedCorsOrigins = new List<string> { configuration["ANGULAR_SPA"], configuration["WEBAPI"] },
                     AllowAccessTokensViaBrowser = true,
                     AllowedScopes = new List<string> { "openid", "profile", "api1" },
                     RequireConsent = false
                 }
             };
+            return clients;
         }
     }
 }

@@ -5,6 +5,9 @@ services:
     image: bmantay/identityserver
     ports:
       - "5000:80"
+    environment:
+      WEBAPI: "http://acs-identityserver.eastus.cloudapp.azure.com:5001"
+      ANGULAR_SPA: "http://acs-identityserver.eastus.cloudapp.azure.com:4200"
 
   webapi:
     image: bmantay/webapi

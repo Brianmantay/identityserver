@@ -7,6 +7,9 @@ services:
     build:
       context: ./identityserver
       dockerfile: Dockerfile
+    environment:
+      WEBAPI: "http://localhost:5001"
+      ANGULAR_SPA: "http://localhost:4200"
 
   webapi:
     environment:

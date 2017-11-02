@@ -3,25 +3,42 @@ using IdentityServer4.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using IdentityServer4.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace identityserver
 {
     public class Startup
     {
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+            builder.AddEnvironmentVariables();
+            Configuration = builder.Build();
+        }
+
+        public IConfigurationRoot Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityServer(x =>
                 {
-                    // TODO: revisit this https://stackoverflow.com/questions/43911536/how-can-i-use-identityserver4-from-inside-and-outside-a-docker-machine
-                    x.IssuerUri = "my_auth";
+                    x.IssuerUri = "http://identityserver";
                 })
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryClients(Config.GetClients(Configuration))
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddTestUsers(TestUsers.Users);
+                .AddTestUsers(TestUsers.Users)
+                .AddCorsPolicyService<InMemoryCorsPolicyService>();
            
             services.AddMvc();
+
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -32,6 +49,13 @@ namespace identityserver
             }
 
             app.UseIdentityServer();
+            app.UseCors(builder => 
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+            );
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }
