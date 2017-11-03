@@ -9,18 +9,18 @@ import { AuthService } from '../../services/auth.service';
 })
 export class AuthCallbackComponent implements OnInit {
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+    constructor(
+        private authService: AuthService,
+        private router: Router
+    ) { }
 
   ngOnInit() {
-    this.authService.completeAuthentication()
-      .then(x => {
+      this.authService.completeAuthentication()
+        .then(x => {
             this.router.navigate(['/home']);
-       })
-      .catch(reason => {
-        console.error(reason);
-      });
+        })
+        .catch(reason => {
+            console.error(reason);
+        });
   }
 }

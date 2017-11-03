@@ -14,14 +14,20 @@ namespace angular_spa.Controllers
         {
             return Json(new
             {
-                authority = Environment.GetEnvironmentVariable("IDENTITY_AUTHORITY"),
-                client_id = "angular_spa",
-                redirect_uri = $"{Environment.GetEnvironmentVariable("ANGULAR_SPA")}/auth-callback",
-                post_logout_redirect_uri = $"{Environment.GetEnvironmentVariable("ANGULAR_SPA")}",
-                response_type = "id_token token",
-                scope = "openid profile api1",
-                filterProtocolClaims = true,
-                loadUserInfo = true
+                OcidClient = new {
+                    authority = Environment.GetEnvironmentVariable("IDENTITY_AUTHORITY"),
+                    client_id = "angular_spa",
+                    redirect_uri = $"{Environment.GetEnvironmentVariable("ANGULAR_SPA")}/auth-callback",
+                    post_logout_redirect_uri = Environment.GetEnvironmentVariable("ANGULAR_SPA"),
+                    response_type = "id_token token",
+                    scope = "openid profile api1",
+                    filterProtocolClaims = true,
+                    loadUserInfo = true
+                },
+                Api = new
+                {
+                    Url = Environment.GetEnvironmentVariable("WEBAPI")
+                }
             });
         }
     }

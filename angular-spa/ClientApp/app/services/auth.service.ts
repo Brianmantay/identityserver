@@ -9,7 +9,7 @@ export class AuthService {
     private user: User;
 
     constructor(private settingsService: SettingsService) {
-        this.manager = new UserManager(settingsService.getSettings());
+        this.manager = new UserManager(settingsService.settings.ocidClient);
         this.manager.getUser().then(user => {
             this.user = user;
         });
