@@ -1,26 +1,15 @@
 import { Injectable } from '@angular/core';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
-
-export function getClientSettings(): UserManagerSettings {
-    return {
-        authority: 'http://localhost:5000/',
-        client_id: 'angular_spa',
-        redirect_uri: 'http://localhost:4200/auth-callback',
-        post_logout_redirect_uri: 'http://localhost:4200/',
-        response_type: "id_token token",
-        scope: "openid profile api1",
-        filterProtocolClaims: true,
-        loadUserInfo: true
-    };
-}
+import { SettingsService } from '../services/settings.service'
 
 @Injectable()
 export class AuthService {
 
-    private manager = new UserManager(getClientSettings());
+    private manager: UserManager;
     private user: User;
 
-    constructor() {
+    constructor(private settingsService: SettingsService) {
+        this.manager = new UserManager(settingsService.getSettings());
         this.manager.getUser().then(user => {
             this.user = user;
         });

@@ -10,8 +10,10 @@ import { HomeComponent } from './components/home/home.component';
 
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
+import { SettingsService } from './services/settings.service';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 import { ProtectedPlaceComponent } from './components/protected-place/protected-place.component';
+import { APP_INITIALIZER } from '@angular/core';
 
 const routes = [
     { 
@@ -39,6 +41,10 @@ const routes = [
     },
 ];
 
+export function startupServiceFactory(settingsService: SettingsService): Function {
+    return () => settingsService.load();
+}
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -55,7 +61,14 @@ const routes = [
     ],
     providers: [
         AuthGuardService,
-        AuthService
+        AuthService,
+        SettingsService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: startupServiceFactory,
+            deps: [SettingsService],
+            multi: true
+        }
   ]
 })
 export class AppModuleShared {
