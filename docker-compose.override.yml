@@ -2,26 +2,28 @@ version: '2'
 
 services:
   identityserver:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: ./identityserver
       dockerfile: Dockerfile
     environment:
-      WEBAPI: "http://localhost:5001"
-      ANGULAR_SPA: "http://localhost:4200"
+    - ASPNETCORE_ENVIRONMENT=Development
+    - WEBAPI=http://localhost:5001
+    - ANGULAR_SPA=http://localhost:4200
 
   webapi:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: ./webapi
       dockerfile: Dockerfile
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
     
   angular-spa:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: ./angular-spa
       dockerfile: Dockerfile
-    
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    - WEBAPI=http://localhost:5001
+    - ANGULAR_SPA=http://localhost:4200
+    - IDENTITY_AUTHORITY=http://localhost:5000
+      
