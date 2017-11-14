@@ -1,14 +1,16 @@
 version: '2'
 
 services:
+
   identityserver:
     build:
       context: ./identityserver
       dockerfile: Dockerfile
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
-    - WEBAPI=http://localhost:5001
-    - ANGULAR_SPA=http://localhost:4200
+    - WEBAPI=http://api.domain.com
+    - ANGULAR_SPA=http://spa.domain.com
+    - VIRTUAL_HOST=id.domain.com
 
   webapi:
     build:
@@ -16,6 +18,7 @@ services:
       dockerfile: Dockerfile
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
+    - VIRTUAL_HOST=api.domain.com
     
   angular-spa:
     build:
@@ -23,7 +26,8 @@ services:
       dockerfile: Dockerfile
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
-    - WEBAPI=http://localhost:5001
-    - ANGULAR_SPA=http://localhost:4200
-    - IDENTITY_AUTHORITY=http://localhost:5000
+    - WEBAPI=http://api.domain.com
+    - ANGULAR_SPA=http://spa.domain.com
+    - IDENTITY_AUTHORITY=http://id.domain.com
+    - VIRTUAL_HOST=spa.domain.com
       

@@ -1,29 +1,37 @@
 version: '2'
 
 services:
+  proxy:  
+    image: jwilder/nginx-proxy
+    ports:
+    - "80:80"
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+    links:
+    - identityserver
+    - webapi
+    - angular-spa
+
   identityserver:
     image: bmantay/identityserver
-    ports:
-    - "5000:80"
     environment:
-    - WEBAPI=http://acs-identityserver.eastus.cloudapp.azure.com:5001
-    - ANGULAR_SPA=http://acs-identityserver.eastus.cloudapp.azure.com:4200
+    - WEBAPI=http://api.brianmantay.com
+    - ANGULAR_SPA=http://spa.brianmantay.com
 
   webapi:
     image: bmantay/webapi
-    ports:
-    - "5001:80"
+    environment:
+    - VIRTUAL_HOST=api.brianmantay.com
     links:
     - identityserver
 
   angular-spa:
     image: bmantay/angular-spa
-    ports:
-    - "4200:80"
     links:
     - identityserver
     - webapi
     environment:
-    - WEBAPI=http://acs-identityserver.eastus.cloudapp.azure.com:5001
-    - ANGULAR_SPA=http://acs-identityserver.eastus.cloudapp.azure.com:4200
-    - IDENTITY_AUTHORITY=http://acs-identityserver.eastus.cloudapp.azure.com:5000
+    - WEBAPI=http://api.brianmantay.com
+    - ANGULAR_SPA=http://spa.brianmantay.com
+    - IDENTITY_AUTHORITY=http://id.brianmantay.com
+    - VIRTUAL_HOST=spa.brianmantay.com
