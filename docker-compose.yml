@@ -5,8 +5,10 @@ services:
     image: jwilder/nginx-proxy
     ports:
     - "80:80"
+    - "443:443"
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
+    - ./certs:/etc/nginx/certs:ro
     links:
     - identityserver
     - webapi
@@ -17,11 +19,13 @@ services:
     environment:
     - WEBAPI=http://api.brianmantay.com
     - ANGULAR_SPA=http://spa.brianmantay.com
+    - VIRTUAL_PORT=443
 
   webapi:
     image: bmantay/webapi
     environment:
     - VIRTUAL_HOST=api.brianmantay.com
+    - VIRTUAL_PORT=443
     links:
     - identityserver
 
@@ -35,3 +39,4 @@ services:
     - ANGULAR_SPA=http://spa.brianmantay.com
     - IDENTITY_AUTHORITY=http://id.brianmantay.com
     - VIRTUAL_HOST=spa.brianmantay.com
+    - VIRTUAL_PORT=443

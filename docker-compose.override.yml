@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
-    - WEBAPI=http://api.domain.com
-    - ANGULAR_SPA=http://spa.domain.com
+    - WEBAPI=https://api.domain.com
+    - ANGULAR_SPA=https://spa.domain.com
     - VIRTUAL_HOST=id.domain.com
 
   webapi:
@@ -26,8 +26,8 @@ services:
       dockerfile: Dockerfile
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
-    - WEBAPI=http://api.domain.com
-    - ANGULAR_SPA=http://spa.domain.com
-    - IDENTITY_AUTHORITY=http://id.domain.com
+    - WEBAPI=https://api.domain.com
+    - ANGULAR_SPA=https://spa.domain.com
+    - IDENTITY_AUTHORITY=https://id.domain.com
     - VIRTUAL_HOST=spa.domain.com
       
