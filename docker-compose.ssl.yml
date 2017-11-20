@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+
+  identityserver:
+    environment:
+    - LETSENCRYPT_HOST=id.brianmantay.com
+    - LETSENCRYPT_EMAIL=admin@brianmantay.com
+
+  webapi:
+    environment:
+    - LETSENCRYPT_HOST=api.brianmantay.com
+    - LETSENCRYPT_EMAIL=admin@brianmantay.com
+
+  angular-spa:
+    environment:
+    - LETSENCRYPT_HOST=spa.brianmantay.com
+    - LETSENCRYPT_EMAIL=admin@brianmantay.com

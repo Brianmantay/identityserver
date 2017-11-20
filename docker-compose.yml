@@ -9,16 +9,28 @@ services:
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
     - ./certs:/etc/nginx/certs:ro
+    - /etc/nginx/vhost.d
+    - /usr/share/nginx/html
     links:
     - identityserver
     - webapi
     - angular-spa
 
+  proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - ./certs:/etc/nginx/certs:rw
+    - ./vhost.d:/etc/nginx/vhost.d:rw
+    - ./html:/usr/share/nginx/html:rw
+    environment:
+    - NGINX_PROXY_CONTAINER=proxy
+
   identityserver:
     image: bmantay/identityserver
     environment:
-    - WEBAPI=http://api.brianmantay.com
-    - ANGULAR_SPA=http://spa.brianmantay.com
+    - WEBAPI=https://api.brianmantay.com
+    - ANGULAR_SPA=https://spa.brianmantay.com
     - VIRTUAL_PORT=443
 
   webapi:
@@ -35,8 +47,8 @@ services:
     - identityserver
     - webapi
     environment:
-    - WEBAPI=http://api.brianmantay.com
-    - ANGULAR_SPA=http://spa.brianmantay.com
-    - IDENTITY_AUTHORITY=http://id.brianmantay.com
+    - WEBAPI=https://api.brianmantay.com
+    - ANGULAR_SPA=https://spa.brianmantay.com
+    - IDENTITY_AUTHORITY=https://id.brianmantay.com
     - VIRTUAL_HOST=spa.brianmantay.com
     - VIRTUAL_PORT=443

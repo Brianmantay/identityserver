@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace webapi
 {
@@ -48,6 +49,14 @@ namespace webapi
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var options = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+            app.UseForwardedHeaders(options);
+
             app.UseCors("default");
             app.UseAuthentication();
             app.UseMvc();
